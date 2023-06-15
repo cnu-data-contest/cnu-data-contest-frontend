@@ -1,14 +1,14 @@
 import axios from 'axios'
 
-const host = window.location.hostname === 'localhost' ? 'http://34.64.142.115:8080' : 'api'
+// const host = window.location.hostname === 'localhost' ? 'https://lagohalttae-api.ml:8080/' : 'api'
 
-export const apiClient = axios.create({
-  baseURL: host,
-});
+// export const apiClient = axios.create({
+//   baseURL: host,
+// });
 
 export default async function getAsync(url, config) {
   try {
-    const res = await apiClient(url, config)
+    const res = await axios(url, config)
     // console.log(res)
     return res.data
   } catch (err) {
