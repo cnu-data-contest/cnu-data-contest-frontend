@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import DOMPurify from "dompurify";
 import {
   Container,
   InnerContainer,
@@ -8,27 +9,27 @@ import {
   ContentContainer,
   Content,
   ImageContainer,
-} from './PostContent.style'
+} from "./PostContent.style";
 
 const ServerHTMLRendering = ({ htmlString }) => {
-  const withoutImgTags = htmlString.replace(/<img\b[^>]*>/gi, '')
+  const sanitizedHTML = DOMPurify.sanitize(htmlString);
 
-  return <div dangerouslySetInnerHTML={{ __html: withoutImgTags }} />
-}
+  return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />;
+};
 
 function PostContent({ clickedPost }) {
-  const { title, baseUrl, image, writer, update_dt, content } = clickedPost
-  const [imageUrl, setIamgeUrl] = useState(`${baseUrl}${image}`)
-  
-  const handleTransferDate = itemDate => {
-    const data = JSON.parse(itemDate)
-    const date = new Date(data.time)
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const formattedDate = `${year}-${month}-${day}`
-    return formattedDate
-  }
+  const { title, baseUrl, image, writer, update_dt, content } = clickedPost;
+  const [imageUrl, setIamgeUrl] = useState(`${baseUrl}${image}`);
+
+  const handleTransferDate = (itemDate) => {
+    const data = JSON.parse(itemDate);
+    const date = new Date(data.time);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+  };
 
   return (
     <Container>
@@ -44,7 +45,7 @@ function PostContent({ clickedPost }) {
         </Sub>
         <Content>
           <ContentContainer>
-            {image === '' || image.startsWith('http') ? null : (
+            {image === "" || image.startsWith("http") ? null : (
               <img src={imageUrl} alt={title} />
             )}
             <ServerHTMLRendering htmlString={content} />
@@ -52,7 +53,7 @@ function PostContent({ clickedPost }) {
         </Content>
       </InnerContainer>
     </Container>
-  )
+  );
 }
 
-export default PostContent
+export default PostContent;
